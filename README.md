@@ -112,12 +112,9 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_managed_identity_client_id"></a> [managed\_identity\_client\_id](#output\_managed\_identity\_client\_id) | The client id of the managed identity |
+| <a name="output_managed_identity_object_id"></a> [managed\_identity\_object\_id](#output\_managed\_identity\_object\_id) | The object id id of the managed identity |
 | <a name="output_service_endpoint_id"></a> [service\_endpoint\_id](#output\_service\_endpoint\_id) | The id of the service endpoint |
 | <a name="output_service_endpoint_name"></a> [service\_endpoint\_name](#output\_service\_endpoint\_name) | The project name of the service endpoint is made with |
 | <a name="output_service_endpoint_project_id"></a> [service\_endpoint\_project\_id](#output\_service\_endpoint\_project\_id) | The project id of the service endpoint is made with |
 | <a name="output_service_endpoint_service_principal_id"></a> [service\_endpoint\_service\_principal\_id](#output\_service\_endpoint\_service\_principal\_id) | The service principal id service endpoint is made with |
-| <a name="output_user_assigned_managed_identity_id"></a> [user\_assigned\_managed\_identity\_id](#output\_user\_assigned\_managed\_identity\_id) | The resource id of the managed identity |
-| <a name="output_user_assigned_managed_identity_object_id"></a> [user\_assigned\_managed\_identity\_object\_id](#output\_user\_assigned\_managed\_identity\_object\_id) | The object id id of the managed identity |
-| <a name="output_user_assigned_managed_identity_tenant_id"></a> [user\_assigned\_managed\_identity\_tenant\_id](#output\_user\_assigned\_managed\_identity\_tenant\_id) | The tenant id of the managed identity |
-| <a name="output_workload_identity_federation_issuer"></a> [workload\_identity\_federation\_issuer](#output\_workload\_identity\_federation\_issuer) | The issuer for the workload issuer |
-| <a name="output_workload_identity_federation_subject"></a> [workload\_identity\_federation\_subject](#output\_workload\_identity\_federation\_subject) | The subject for the workload federation |
