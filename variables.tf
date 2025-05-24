@@ -61,15 +61,9 @@ variable "role_definition_name_to_assign" {
   default     = "Reader"
 }
 
-variable "system_assigned_managed_identity_client_id" {
+variable "system_assigned_managed_identity_principal_id" {
   type        = string
-  description = "The client id of the system assigned managed identity"
-  default     = null
-}
-
-variable "system_assigned_managed_identity_object_id" {
-  type        = string
-  description = "The object id of the system assigned managed identity"
+  description = "The principal id of the system assigned managed identity"
   default     = null
 }
 

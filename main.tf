@@ -42,7 +42,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure_devops_service_endpoint_az
   service_endpoint_authentication_scheme = "ManagedServiceIdentity"
 
   credentials {
-    serviceprincipalid = var.system_assigned_managed_identity_client_id == null ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_client_id
+    serviceprincipalid = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_principal_id
   }
 
   azurerm_spn_tenantid      = data.azurerm_client_config.current.tenant_id
@@ -52,7 +52,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure_devops_service_endpoint_az
 
 resource "azurerm_role_assignment" "assign_spn_to_subscription" {
   count                = var.attempt_assign_role_to_spn == true ? 1 : 0
-  principal_id         = var.system_assigned_managed_identity_object_id == null ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_object_id
+  principal_id         = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_principal_id
   scope                = data.azurerm_subscription.current.id
   role_definition_name = var.role_definition_name_to_assign
 }
