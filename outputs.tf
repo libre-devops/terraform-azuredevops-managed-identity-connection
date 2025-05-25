@@ -1,6 +1,11 @@
+output "managed_identity_id" {
+  description = "The id of the managed identity"
+  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid[0].id : null
+}
+
 output "managed_identity_principal_id" {
-  description = "The pricipal id of the managed identity"
-  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_principal_id
+  description = "The principal id of the managed identity"
+  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid[0].principal_id : var.system_assigned_managed_identity_principal_id
 }
 
 output "service_endpoint_id" {

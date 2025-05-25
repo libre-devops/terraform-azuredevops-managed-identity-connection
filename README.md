@@ -8,7 +8,8 @@ data "azuredevops_project" "project_id" {
 }
 
 locals {
-  default_managed_identity_name        = var.managed_identity_name != null ? var.managed_identity_name : "msi-fed-azdo-${var.azuredevops_project_name}-${var.azuredevops_organization_guid}"
+  default_managed_identity_type        = var.managed_identity_type != "SystemAssigned" ? "UserAssigned" : "SystemAssigned"
+  default_managed_identity_name        = var.managed_identity_name != null ? var.managed_identity_name : "msi-azdo-${var.azuredevops_project_name}-${var.azuredevops_organization_guid}"
   default_managed_identity_description = var.managed_identity_description != null ? var.managed_identity_description : "This managed identity is for the federated credential of Azure DevOps of the project ${var.azuredevops_project_name}, in the organization ${var.azuredevops_organization_name} with guid ${var.azuredevops_organization_guid}"
 }
 
@@ -29,6 +30,7 @@ locals {
 }
 
 resource "azurerm_user_assigned_identity" "uid" {
+  count               = local.default_managed_identity_type != "SystemAssigned" ? 1 : 0
   name                = local.default_managed_identity_name
   resource_group_name = local.rg_name != null ? local.rg_name : module.rg[0].rg_name
   location            = var.location
@@ -43,7 +45,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure_devops_service_endpoint_az
   service_endpoint_authentication_scheme = "ManagedServiceIdentity"
 
   credentials {
-    serviceprincipalid = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_principal_id
+    serviceprincipalid = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid[0].principal_id : var.system_assigned_managed_identity_principal_id
   }
 
   azurerm_spn_tenantid      = data.azurerm_client_config.current.tenant_id
@@ -53,7 +55,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure_devops_service_endpoint_az
 
 resource "azurerm_role_assignment" "assign_spn_to_subscription" {
   count                = var.attempt_assign_role_to_spn == true ? 1 : 0
-  principal_id         = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_principal_id
+  principal_id         = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid[0].principal_id : var.system_assigned_managed_identity_principal_id
   scope                = data.azurerm_subscription.current.id
   role_definition_name = var.role_definition_name_to_assign
 }
@@ -111,7 +113,8 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_managed_identity_principal_id"></a> [managed\_identity\_principal\_id](#output\_managed\_identity\_principal\_id) | The pricipal id of the managed identity |
+| <a name="output_managed_identity_id"></a> [managed\_identity\_id](#output\_managed\_identity\_id) | The id of the managed identity |
+| <a name="output_managed_identity_principal_id"></a> [managed\_identity\_principal\_id](#output\_managed\_identity\_principal\_id) | The principal id of the managed identity |
 | <a name="output_service_endpoint_id"></a> [service\_endpoint\_id](#output\_service\_endpoint\_id) | The id of the service endpoint |
 | <a name="output_service_endpoint_name"></a> [service\_endpoint\_name](#output\_service\_endpoint\_name) | The project name of the service endpoint is made with |
 | <a name="output_service_endpoint_project_id"></a> [service\_endpoint\_project\_id](#output\_service\_endpoint\_project\_id) | The project id of the service endpoint is made with |
