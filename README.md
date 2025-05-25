@@ -45,7 +45,7 @@ resource "azuredevops_serviceendpoint_azurerm" "azure_devops_service_endpoint_az
   service_endpoint_authentication_scheme = "ManagedServiceIdentity"
 
   credentials {
-    serviceprincipalid = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid[0].principal_id : var.system_assigned_managed_identity_principal_id
+    serviceprincipalid = var.system_assigned_managed_identity_principal_id == null ? azurerm_user_assigned_identity.uid[0].client : var.system_assigned_managed_identity_client_id
   }
 
   azurerm_spn_tenantid      = data.azurerm_client_config.current.tenant_id
@@ -60,6 +60,15 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
   role_definition_name = var.role_definition_name_to_assign
 }
 
+resource "azurerm_federated_identity_credential" "fed_cred_managed_identity" {
+  count               = var.managed_identity_type == "UserAssigned" ? 1 : 0
+  name                = local.default_managed_identity_name
+  resource_group_name = local.rg_name
+  parent_id           = azurerm_user_assigned_identity.uid[0].id
+  audience            = ["api://AzureADTokenExchange"]
+  issuer              = azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm.workload_identity_federation_issuer
+  subject             = azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm.workload_identity_federation_subject
+}
 ```
 ## Requirements
 
@@ -85,6 +94,7 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
 | Name | Type |
 |------|------|
 | [azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/serviceendpoint_azurerm) | resource |
+| [azurerm_federated_identity_credential.fed_cred_managed_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/federated_identity_credential) | resource |
 | [azurerm_role_assignment.assign_spn_to_subscription](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_user_assigned_identity.uid](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
 | [azuredevops_project.project_id](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/data-sources/project) | data source |
@@ -106,6 +116,7 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
 | <a name="input_rg_id"></a> [rg\_id](#input\_rg\_id) | The id of a resource group, supplying this value stops the module from creating a resource group, defaults to null as created a resource group is the default behaviour | `string` | `null` | no |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | The name of the resource group, this module creates a resource group for you, so please supply a unique name | `string` | `null` | no |
 | <a name="input_role_definition_name_to_assign"></a> [role\_definition\_name\_to\_assign](#input\_role\_definition\_name\_to\_assign) | The role definition needed to setup SPN, for security reasons, defautls to Reader | `string` | `"Reader"` | no |
+| <a name="input_system_assigned_managed_identity_client_id"></a> [system\_assigned\_managed\_identity\_client\_id](#input\_system\_assigned\_managed\_identity\_client\_id) | The client id of the system assigned managed identity | `string` | `null` | no |
 | <a name="input_system_assigned_managed_identity_principal_id"></a> [system\_assigned\_managed\_identity\_principal\_id](#input\_system\_assigned\_managed\_identity\_principal\_id) | The principal id of the system assigned managed identity | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of the tags to use on the resources that are deployed with this module. | `map(string)` | `{}` | no |
 
