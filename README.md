@@ -123,6 +123,7 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_managed_identity_client_id"></a> [managed\_identity\_client\_id](#output\_managed\_identity\_client\_id) | The client id of the managed identity |
 | <a name="output_managed_identity_id"></a> [managed\_identity\_id](#output\_managed\_identity\_id) | The id of the managed identity |
 | <a name="output_managed_identity_principal_id"></a> [managed\_identity\_principal\_id](#output\_managed\_identity\_principal\_id) | The principal id of the managed identity |
 | <a name="output_service_endpoint_id"></a> [service\_endpoint\_id](#output\_service\_endpoint\_id) | The id of the service endpoint |

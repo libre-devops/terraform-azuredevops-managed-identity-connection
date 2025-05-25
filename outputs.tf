@@ -1,3 +1,8 @@
+output "managed_identity_client_id" {
+  description = "The client id of the managed identity"
+  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid[0].client_id : var.system_assigned_managed_identity_client_id
+}
+
 output "managed_identity_id" {
   description = "The id of the managed identity"
   value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid[0].id : null
