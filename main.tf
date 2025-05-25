@@ -59,12 +59,12 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
   role_definition_name = var.role_definition_name_to_assign
 }
 
-resource "azurerm_federated_identity_credential" "fed_cred_managed_identity" {
-  count               = var.managed_identity_type == "UserAssigned" ? 1 : 0
-  name                = local.default_managed_identity_name
-  resource_group_name = local.rg_name
-  parent_id           = azurerm_user_assigned_identity.uid[0].id
-  audience            = ["api://AzureADTokenExchange"]
-  issuer              = azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm.workload_identity_federation_issuer
-  subject             = azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm.workload_identity_federation_subject
-}
+# resource "azurerm_federated_identity_credential" "fed_cred_managed_identity" {
+#   count               = var.managed_identity_type == "UserAssigned" ? 1 : 0
+#   name                = local.default_managed_identity_name
+#   resource_group_name = local.rg_name
+#   parent_id           = azurerm_user_assigned_identity.uid[0].id
+#   audience            = ["api://AzureADTokenExchange"]
+#   issuer              = azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm.workload_identity_federation_issuer
+#   subject             = azuredevops_serviceendpoint_azurerm.azure_devops_service_endpoint_azurerm.workload_identity_federation_subject
+# }
