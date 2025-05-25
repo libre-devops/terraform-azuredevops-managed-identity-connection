@@ -8,7 +8,7 @@ data "azuredevops_project" "project_id" {
 }
 
 locals {
-  default_managed_identity_name        = var.managed_identity_name != null ? var.managed_identity_name : "umsi-fed-azdo-${var.azuredevops_project_name}-${var.azuredevops_organization_guid}"
+  default_managed_identity_name        = var.managed_identity_name != null ? var.managed_identity_name : "msi-fed-azdo-${var.azuredevops_project_name}-${var.azuredevops_organization_guid}"
   default_managed_identity_description = var.managed_identity_description != null ? var.managed_identity_description : "This managed identity is for the federated credential of Azure DevOps of the project ${var.azuredevops_project_name}, in the organization ${var.azuredevops_organization_name} with guid ${var.azuredevops_organization_guid}"
 }
 
@@ -111,8 +111,7 @@ resource "azurerm_role_assignment" "assign_spn_to_subscription" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_managed_identity_client_id"></a> [managed\_identity\_client\_id](#output\_managed\_identity\_client\_id) | The client id of the managed identity |
-| <a name="output_managed_identity_object_id"></a> [managed\_identity\_object\_id](#output\_managed\_identity\_object\_id) | The object id id of the managed identity |
+| <a name="output_managed_identity_principal_id"></a> [managed\_identity\_principal\_id](#output\_managed\_identity\_principal\_id) | The pricipal id of the managed identity |
 | <a name="output_service_endpoint_id"></a> [service\_endpoint\_id](#output\_service\_endpoint\_id) | The id of the service endpoint |
 | <a name="output_service_endpoint_name"></a> [service\_endpoint\_name](#output\_service\_endpoint\_name) | The project name of the service endpoint is made with |
 | <a name="output_service_endpoint_project_id"></a> [service\_endpoint\_project\_id](#output\_service\_endpoint\_project\_id) | The project id of the service endpoint is made with |

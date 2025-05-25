@@ -1,11 +1,6 @@
-output "managed_identity_client_id" {
-  description = "The client id of the managed identity"
-  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid.client_id : var.system_assigned_managed_identity_client_id
-}
-
-output "managed_identity_object_id" {
-  description = "The object id id of the managed identity"
-  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_object_id
+output "managed_identity_principal_id" {
+  description = "The pricipal id of the managed identity"
+  value       = var.managed_identity_type != "SystemAssigned" ? azurerm_user_assigned_identity.uid.principal_id : var.system_assigned_managed_identity_principal_id
 }
 
 output "service_endpoint_id" {

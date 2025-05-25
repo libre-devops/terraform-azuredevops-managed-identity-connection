@@ -7,7 +7,7 @@ data "azuredevops_project" "project_id" {
 }
 
 locals {
-  default_managed_identity_name        = var.managed_identity_name != null ? var.managed_identity_name : "umsi-fed-azdo-${var.azuredevops_project_name}-${var.azuredevops_organization_guid}"
+  default_managed_identity_name        = var.managed_identity_name != null ? var.managed_identity_name : "msi-fed-azdo-${var.azuredevops_project_name}-${var.azuredevops_organization_guid}"
   default_managed_identity_description = var.managed_identity_description != null ? var.managed_identity_description : "This managed identity is for the federated credential of Azure DevOps of the project ${var.azuredevops_project_name}, in the organization ${var.azuredevops_organization_name} with guid ${var.azuredevops_organization_guid}"
 }
 
